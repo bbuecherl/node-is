@@ -1,5 +1,5 @@
 {
-  "name": "is",
+  "name": "node-is",
   "version": "0.1.0",
   "description": "simplified descriptive type testing library",
   "license": "MIT",
@@ -17,9 +17,11 @@
       "email": "bernhard.buecherl@gmail.com"
     }
   ],
+  "homepage": "https://github.com/bbuecherl/node-is",
+  "bugs": "https://github.com/bbuecherl/node-is/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bbuecherl/is.git"
+    "url": "https://github.com/bbuecherl/node-is.git"
   },
   "keywords": [
     "type",
