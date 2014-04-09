@@ -2,6 +2,7 @@ is
 ====
 simplified descriptive type testing library
 -------------------------------------------
+[![Build Status](https://travis-ci.org/bbuecherl/node-is.png)](https://travis-ci.org/bbuecherl/node-is)
 
 Supporting Node, AMDs and the browsers
 
@@ -41,9 +42,16 @@ Test functions, returning true, when type is matching:
 Multitest function `is.type.of(obj)`
 ------------------------------------
 returns two testing functions:
+
 -`equal()` which can be used to test for various types that have to match all, e.g.: `is.type.of(1).equal("Number","Integer","Positive"); // returns true`
 - `either()` to test for various types, where at least one has to match, e.g.: `is.type.of(1).either("Float","Integer"); //returns true`
 
+
+Changelog:
+----------
+
+- 0.1.1 Added travis test
+- 0.1.0 initial version
 
 Note:
 -----

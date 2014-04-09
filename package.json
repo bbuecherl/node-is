@@ -1,6 +1,6 @@
 {
   "name": "node-is",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "simplified descriptive type testing library",
   "license": "MIT",
   "engines": {
