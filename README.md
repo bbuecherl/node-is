@@ -43,7 +43,7 @@ Multitest function `is.type.of(obj)`
 ------------------------------------
 returns two testing functions:
 
--`equal()` which can be used to test for various types that have to match all, e.g.: `is.type.of(1).equal("Number","Integer","Positive"); // returns true`
+- `equal()` which can be used to test for various types that have to match all, e.g.: `is.type.of(1).equal("Number","Integer","Positive"); // returns true`
 - `either()` to test for various types, where at least one has to match, e.g.: `is.type.of(1).either("Float","Integer"); //returns true`
 
 
