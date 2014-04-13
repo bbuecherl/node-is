@@ -21,7 +21,7 @@
             return ( obj > 0 );
         },
         Float: function( obj ) {
-            return ( that.Number( obj ) && isFinite ( obj ) && Math.floor( obj ) !== obj );
+            return ( that.Number( obj ) && isFinite( obj ) && Math.floor( obj ) !== obj );
         },
         NaN: isNaN,
         Finite: isFinite,
@@ -53,6 +53,7 @@
             return ( obj === null );
         },
         Function: function( obj ) {
+            // Chrome 1-12: RegExp are functions, ES5.1: RegExp is object
             return ( typeof obj === "function" && !that.RegExp( obj ) );
         },
         Array: function( obj ) {
@@ -62,7 +63,8 @@
             return ( Object.prototype.toString.apply( obj ) === "[object RegExp]" );
         },
         Object: function( obj ) {
-            return ( typeof obj === "object" );
+            // Chrome 1-12: RegExp are functions, ES5.1: RegExp is object
+            return ( typeof obj === "object" || that.RegExp( obj ) );
         },
         RealObject: function( obj ) {
             return ( that.Object( obj ) && !that.Null( obj ) && !that.Array( obj ) && !that.RegExp( obj ) && !that.Error( obj ) );
@@ -94,37 +96,51 @@
 
         type: {
             of: function( obj ) {
-                var match = [];
-
-                for( var prop in that ) {
-                    if( prop !== "type" && that[prop]( obj ) )
-                        match.push( prop );
-                }
-
+                var args = arguments, i, j;
                 return {
                     equal: function( ) {
                         for( var i = 0; i < arguments.length; ++i ) {
-                            if( arguments[i][0] === "!" ) {
-                                if( match.indexOf( arguments[i].slice(1) ) > -1 ) {
-                                    return false;
+                            if( that.Function( arguments[i] ) ) {
+                                for( j = 0; j < args.length; ++j ) {
+                                    if( !arguments[i]( args[j] ) )
+                                        return false;
+                                }
+                            } else if( that.String( arguments[i] ) ) {
+                                for( j = 0; j < args.length; ++j ) {
+                                    if( arguments[i][0] === "!" ) {
+                                        if( that[arguments[i].slice(1)]( args[j] ) ) {
+                                            return false;
+                                        }
+                                    } else {
+                                        if( !that[arguments[i]]( args[j] ) ) {
+                                            return false;
+                                        }
+                                    }
                                 }
                             } else {
-                                if( match.indexOf( arguments[i] ) === -1 ) {
-                                    return false;
-                                }
+                                return false;
                             }
                         }
                         return true;
                     },
                     either: function( ) {
-                        for( var i = 0; i < arguments.length; ++i ) {
-                            if( arguments[i][0] === "!" ) {
-                                if( match.indexOf( arguments[i].slice(1) ) === -1 ) {
-                                    return true;
+                        for( i = 0; i < arguments.length; ++i ) {
+                            if( that.Function( arguments[i] ) ) {
+                                for( j = 0; j < args.length; ++j ) {
+                                    if( arguments[i]( args[j] ) )
+                                        return true;
                                 }
-                            } else {
-                                if( match.indexOf( arguments[i] ) > -1 ) {
-                                    return true;
+                            } else if( that.String( arguments[i] ) ) {
+                                for( j = 0; j < args.length; ++j ) {
+                                    if( arguments[i][0] === "!" ) {
+                                        if( !that[arguments[i].slice(1)]( args[j] ) ) {
+                                            return true;
+                                        }
+                                    } else {
+                                        if( that[arguments[i]]( args[j] ) ) {
+                                            return true;
+                                        }
+                                    }
                                 }
                             }
                         }

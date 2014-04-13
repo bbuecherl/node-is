@@ -3,6 +3,7 @@ is
 simplified descriptive type testing library
 -------------------------------------------
 [![Build Status](https://travis-ci.org/bbuecherl/node-is.png)](https://travis-ci.org/bbuecherl/node-is)
+[![NPM](https://nodei.co/npm/node-is.png)](https://nodei.co/npm/node-is/)
 
 Supporting Node, AMDs and the browsers
 
@@ -39,17 +40,19 @@ Test functions, returning true, when type is matching:
 - `is.RealError(new Error())` test for *real* `Error`-objects only, will not match `RangeError`, `EvalError`, `URIError`, `SyntaxError`, `TypeError`, `ReferenceError`
 
 
-Multitest function `is.type.of(obj)`
+Multitest function `is.type.of(obj1[,obj2[,obj3[,...]]])`
 ------------------------------------
 returns two testing functions:
 
-- `equal()` which can be used to test for various types that have to match all, e.g.: `is.type.of(1).equal("Number","Integer","Positive"); // returns true`
-- `either()` to test for various types, where at least one has to match, e.g.: `is.type.of(1).either("Float","Integer"); //returns true`
+- `equal()` which can be used to test for various types that have to match all, e.g.: `is.type.of(1,0).equal("Number","Integer","!Negative"); // returns true`
+- `either()` to test for various types, where at least one has to match, e.g.: `is.type.of(1,0,2).either("Float","Integer"); //returns true`
 
+`equal()` and `either()` can be used to test with your own functions too:
+`is.type.of("hello", "world").equal("String", "!EmptyString", function(elm) { return elm[3]==="l"; }); //returns true`
 
 Changelog:
 ----------
-
+- 0.2.0 `is.type.of` can now test an unlimited amount of arguments `is.type.of(..).equal()` and `is.type.of(..).either()` can now test own functions too
 - 0.1.1 Added travis test
 - 0.1.0 initial version
 
