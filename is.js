@@ -32,10 +32,10 @@
             return ( typeof obj === "boolean" );
         },
         False: function( obj ) {
-            return ( that.Boolean( obj ) && !obj );
+            return ( that.Boolean( obj ) && true !== obj );
         },
         True: function( obj ) {
-            return ( that.Boolean( obj ) && obj );
+            return ( that.Boolean( obj ) && true === obj );
         },
         String: function( obj ) {
             return ( typeof obj === "string" );
@@ -94,8 +94,84 @@
             return ( that.Error( obj ) && obj.toString( ).substr( 0, 5 ) === "Error" );
         },
 
+        expect: ( function( ) {
+            var toArr = function( args ) {
+                    return Array.prototype.slice.call( args, 0 );
+                },
+                listExpected = function( args, lastSep ) {
+                    var str = "", ownFunct = 0, sep = "";
+
+                    for( var i = 0; i < args.length; ++i ) {
+                        if( i == 1 ) {
+                            str += ", ";
+                        }
+                        if( i == args.length -1 ) {
+                            str += " " + lastSep + " ";
+                        }
+
+                        if( that.Function( args[i] ) ) {
+                            if( that.Defined( args[i].name ) ) {
+                                str += args[i].name;
+                            } else {
+                                str += "ownFunction_" + ( ownFunct++ );
+                            }
+                        } else if( that.String( args[i] ) ) {
+                            str += args[i];
+                        } else {
+                            return "unkown test statement";
+                        }
+                    }
+
+                    return str;
+                };
+
+            return {
+                type: {
+                    of: function( ) {
+                        var args = arguments,
+                            ref = that.type.of.apply( 0, args );
+
+                        return {
+                            to: {
+                                be: {
+                                    equal: function( ) {
+                                        var ok = ref.equal.apply( 0, arguments );
+
+                                        if( !ok ) {
+                                            var exp = listExpected( arguments, "and" ),
+                                                err = new Error( "expected " + toArr( args ) + " to be " + exp );
+                                            err.name = "AssertionError";
+                                            err.actual = toArr( args );
+                                            err.expected = exp;
+                                            err.showDiff = true;
+
+                                            throw err;
+                                        }
+                                    },
+                                    either: function( ) {
+                                        var ok = ref.either.apply( 0, arguments );
+
+                                        if( !ok ) {
+                                            var exp = listExpected( arguments, "or" ),
+                                                err = new Error( "expected " + toArr( args ) + " to be " + exp );
+                                            err.name = "AssertionError";
+                                            err.actual = toArr( args );
+                                            err.expected = exp;
+                                            err.showDiff = true;
+
+                                            throw err;
+                                        }
+                                    }
+                                }
+                            }
+                        };
+                    }
+                }
+            };
+        }( ) ),
+
         type: {
-            of: function( obj ) {
+            of: function( ) {
                 var args = arguments, i, j;
                 return {
                     equal: function( ) {

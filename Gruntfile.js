@@ -9,7 +9,7 @@ module.exports = function( grunt ) {
 
         uglify: {
             options: {
-                banner: "/*! <%= pkg.name %>.js v<%= pkg.version %>-<%= grunt.template.today('yymmddhhMM') %>\n"
+                banner: "/*! is.js v<%= pkg.version %>-<%= grunt.template.today('yymmddhhMM') %>\n"
                     + " * by @bbuecherl\n"
                     + " * License: MIT\n */\n"
             },

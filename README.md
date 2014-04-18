@@ -50,8 +50,24 @@ returns two testing functions:
 `equal()` and `either()` can be used to test with your own functions too:
 `is.type.of("hello", "world").equal("String", "!EmptyString", function(elm) { return elm[3]==="l"; }); //returns true`
 
+Use with [mocha](http://visionmedia.github.io/mocha) `is.expect`
+----------------------------------------------------------------
+You can now check types for your tests with mocha.
+Example:
+
+```
+var expect = require("node-is").expect;
+
+describe("moche with node-is example", function() {
+    it( "is easy and awesome", function() {
+            expect.type.of(1).to.be.equal("Integer", "Positive");
+    });
+});
+```
+
 Changelog:
 ----------
+- 0.3.0 Added mocha support `is.expect`
 - 0.2.0 `is.type.of` can now test an unlimited amount of arguments `is.type.of(..).equal()` and `is.type.of(..).either()` can now test own functions too
 - 0.1.1 Added travis test
 - 0.1.0 initial version
