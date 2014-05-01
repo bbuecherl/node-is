@@ -2,7 +2,7 @@ var chaiExpect = require("chai").expect,
     expect = require( "../is.min.js" ).expect;
 
 
-describe( "[is.]test.type.of", function( ) {
+describe( "[is.]expect.type.of", function( ) {
     describe( "#equal()", function( ) {
         it( "should not throw an error, when 1 is tested to equal to Number and Integer", function() {
             expect.type.of(1).to.be.equal("Number", "Integer");

@@ -1,12 +1,12 @@
-( function( global, factory ) {
+( function( factory ) {
     if( typeof module === "object" ) {
         module.exports = factory( );
     } else if( typeof define === "function" && define.amd ) {
         define( ["is"], factory );
     } else {
-        global.is = factory( );
+        window.is = factory( );
     }
-}( this, function( ) {
+}( function( ) {
     var that = {
         Number: function( obj ) {
             return ( typeof obj === "number" );
