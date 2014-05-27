@@ -1,17 +1,37 @@
-is
-====
-simplified descriptive type testing library
--------------------------------------------
+# is #
+### simplified descriptive type testing library ###
 [![Build Status](https://travis-ci.org/bbuecherl/node-is.png)](https://travis-ci.org/bbuecherl/node-is)
 [![NPM](https://nodei.co/npm/node-is.png)](https://nodei.co/npm/node-is/)
 
 Supporting Node, AMDs and the browsers
 
-Test functions, returning true, when type is matching:
------------------------------------------
+-----
+## Usage ##
+
+### node.js ###
+Install node-is as dependency using npm in the command line
+```
+> npm install node-js --save
+```
+
+Include the module in your projects javascript file
+```
+var is = require("node-is");
+```
+
+### Browser ###
+Download the code from Github: [is.min.js][3]
+
+Include it in your project
+```
+<script src="path/to/is.min.js" type="text/Javascript"></script>
+```
+
+-----
+## Test functions, returning true, when type is matching ##
 - `is.Number(1)` test for numbers
 - `is.Integer(1)` test for integers
-- `is.Float(.001)` test for floating points
+- `is.Float(.001)` test for floating point numbers
 - `is.Negative(-1.5)` test for negative values
 - `is.Positive(1.5)` test for positive values
 - `is.NaN(NaN)` test for NaN (`isNaN` link)
@@ -39,9 +59,8 @@ Test functions, returning true, when type is matching:
 - `is.RangeError(new RangeError())` test for range errors
 - `is.RealError(new Error())` test for *real* `Error`-objects only, will not match `RangeError`, `EvalError`, `URIError`, `SyntaxError`, `TypeError`, `ReferenceError`
 
-
-Multitest function `is.type.of(obj1[,obj2[,obj3[,...]]])`
-------------------------------------
+-----
+## Multitest function `is.type.of(obj1[,obj2[,obj3[,...]]])` ##
 returns two testing functions:
 
 - `equal()` which can be used to test for various types that have to match all, e.g.: `is.type.of(1,0).equal("Number","Integer","!Negative"); // returns true`
@@ -50,8 +69,8 @@ returns two testing functions:
 `equal()` and `either()` can be used to test with your own functions too:
 `is.type.of("hello", "world").equal("String", "!EmptyString", function(elm) { return elm[3]==="l"; }); //returns true`
 
-Use with [mocha](http://visionmedia.github.io/mocha) `is.expect`
-----------------------------------------------------------------
+-----
+## Use with [mocha][2] `is.expect` ##
 You can now check types for your tests with mocha.
 Example:
 
@@ -65,21 +84,21 @@ describe("moche with node-is example", function() {
 });
 ```
 
-Changelog:
-----------
+-----
+## Changelog: ##
+- 0.3.2 Performance optimization, added usage section to README, added detailed support information
+- 0.3.1 bug fix [#1][4]
 - 0.3.0 Added mocha support `is.expect`
-- 0.2.0 `is.type.of` can now test an unlimited amount of arguments `is.type.of(..).equal()` and `is.type.of(..).either()` can now test own functions too
+- 0.2.0 `is.type.of` can now test an unlimited amount of arguments `is.type.of(..).equal()` and `is.type.of(..).either()` can now test custom functions too
 - 0.1.1 Added travis test
 - 0.1.0 initial version
 
-Note:
 -----
-This library is currently under development
-
-
-License:
---------
+## License: ##
 [MIT][1]
 
 
   [1]: http://bbuecherl.mit-license.org/
+  [2]: http://visionmedia.github.io/mocha
+  [3]: https://github.com/bbuecherl/node-is/blob/master/is.min.js
+  [4]: https://github.com/bbuecherl/node-is/issues/1

@@ -7,9 +7,24 @@
         window.is = factory( );
     }
 }( function( ) {
-    var that = {
+    var $number = "number",
+        $bool = "boolean",
+        $funct = "function",
+        $object = "object",
+        $string = "string",
+        $undef = "undefined",
+        $isRegExpObject = ( typeof /^/g === $object ),
+        $obj = {},
+        $toString = function( o ) { return $obj.toString.call( o ); },
+        $array = [],
+        $arr = $toString( $array ),
+        $regex = $toString( new RegExp( ) ),
+        $err = $toString( new Error( ) ),
+        $not = "!",
+
+        that = {
         Number: function( obj ) {
-            return ( typeof obj === "number" );
+            return ( typeof obj === $number );
         },
         Integer: function( obj ) {
             return ( that.Number( obj ) && isFinite( obj ) && Math.floor( obj ) === obj  );
@@ -29,7 +44,7 @@
             return ( !isFinite( obj ) && !isNaN( obj ) );
         },
         Boolean: function( obj ) {
-            return ( typeof obj === "boolean" );
+            return ( typeof obj === $bool );
         },
         False: function( obj ) {
             return ( that.Boolean( obj ) && true !== obj );
@@ -38,13 +53,13 @@
             return ( that.Boolean( obj ) && true === obj );
         },
         String: function( obj ) {
-            return ( typeof obj === "string" );
+            return ( typeof obj === $string );
         },
         EmptyString: function( obj ) {
             return ( that.String( obj ) && obj.length === 0 );
         },
         Undefined: function( obj ) {
-            return ( typeof obj === "undefined" );
+            return ( typeof obj === $undef );
         },
         Defined: function( obj ) {
             return !that.Undefined( obj );
@@ -53,24 +68,32 @@
             return ( obj === null );
         },
         Function: function( obj ) {
-            // Chrome 1-12: RegExp are functions, ES5.1: RegExp is object
-            return ( typeof obj === "function" && !that.RegExp( obj ) );
+            if( $isRegExpObject ) {
+                return ( typeof obj === $funct );
+            } else {
+                // Chrome 1-12: RegExp are functions, ES5.1: RegExp is object
+                return ( typeof obj === $funct && !that.RegExp( obj ) );
+            }
         },
         Array: function( obj ) {
-            return ( Object.prototype.toString.apply( obj ) === "[object Array]" );
+            return ( $toString( obj ) === $arr );
         },
         RegExp: function( obj ) {
-            return ( Object.prototype.toString.apply( obj ) === "[object RegExp]" );
+            return ( $toString( obj ) === $regex );
         },
         Object: function( obj ) {
-            // Chrome 1-12: RegExp are functions, ES5.1: RegExp is object
-            return ( typeof obj === "object" || that.RegExp( obj ) );
+            if( $isRegExpObject ) {
+                return ( typeof obj === $object );
+            } else {
+                // Chrome 1-12: RegExp are functions, ES5.1: RegExp is object
+                return ( typeof obj === $object || that.RegExp( obj ) );
+            }
         },
         RealObject: function( obj ) {
             return ( that.Object( obj ) && !that.Null( obj ) && !that.Array( obj ) && !that.RegExp( obj ) && !that.Error( obj ) );
         },
         Error: function( obj ) {
-            return ( Object.prototype.toString.apply( obj ) === "[object Error]" );
+            return ( $toString( obj ) === $err );
         },
         TypeError: function( obj ) {
             return ( that.Error( obj ) && obj.toString( ).substr( 0, 9 ) === "TypeError" );
@@ -96,7 +119,7 @@
 
         expect: ( function( ) {
             var toArr = function( args ) {
-                    return Array.prototype.slice.call( args, 0 );
+                    return $array.slice.call( args, 0 );
                 },
                 listExpected = function( args, lastSep ) {
                     var str = "", ownFunct = 0, sep = "";
@@ -113,7 +136,7 @@
                             if( that.Defined( args[i].name ) ) {
                                 str += args[i].name;
                             } else {
-                                str += "ownFunction_" + ( ownFunct++ );
+                                str += "anonymous$" + ( ownFunct++ );
                             }
                         } else if( that.String( args[i] ) ) {
                             str += args[i];
@@ -172,10 +195,10 @@
 
         type: {
             of: function( ) {
-                var args = arguments, i, j;
+                var args = arguments;
                 return {
                     equal: function( ) {
-                        for( var i = 0; i < arguments.length; ++i ) {
+                        for( var i = 0, j; i < arguments.length; ++i ) {
                             if( that.Function( arguments[i] ) ) {
                                 for( j = 0; j < args.length; ++j ) {
                                     if( !arguments[i]( args[j] ) )
@@ -183,7 +206,7 @@
                                 }
                             } else if( that.String( arguments[i] ) ) {
                                 for( j = 0; j < args.length; ++j ) {
-                                    if( arguments[i][0] === "!" ) {
+                                    if( arguments[i][0] === $not ) {
                                         if( that[arguments[i].slice(1)]( args[j] ) ) {
                                             return false;
                                         }
@@ -200,7 +223,7 @@
                         return true;
                     },
                     either: function( ) {
-                        for( i = 0; i < arguments.length; ++i ) {
+                        for( var i = 0, j; i < arguments.length; ++i ) {
                             if( that.Function( arguments[i] ) ) {
                                 for( j = 0; j < args.length; ++j ) {
                                     if( arguments[i]( args[j] ) )
@@ -208,7 +231,7 @@
                                 }
                             } else if( that.String( arguments[i] ) ) {
                                 for( j = 0; j < args.length; ++j ) {
-                                    if( arguments[i][0] === "!" ) {
+                                    if( arguments[i][0] === $not ) {
                                         if( !that[arguments[i].slice(1)]( args[j] ) ) {
                                             return true;
                                         }
