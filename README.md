@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/bbuecherl/node-is.png)](https://travis-ci.org/bbuecherl/node-is)
 [![NPM](https://nodei.co/npm/node-is.png)](https://nodei.co/npm/node-is/)
 
-Supporting Node, AMDs and the browsers
+Supporting Node, AMDs and the browsers ( IE 6+, Chrome 1+, Firefox 3.6+, Opera 12.1+, Safari 5.1+ )
 
 -----
 ## Usage ##
@@ -86,6 +86,7 @@ describe("moche with node-is example", function() {
 
 -----
 ## Changelog: ##
+- 0.4.0 Rewrote library in ES6, compiled using grunt-traceur
 - 0.3.2 Performance optimization, added usage section to README, added detailed support information
 - 0.3.1 bug fix [#1][4]
 - 0.3.0 Added mocha support `is.expect`

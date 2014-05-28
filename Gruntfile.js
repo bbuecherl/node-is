@@ -4,7 +4,21 @@ module.exports = function( grunt ) {
         pkg: grunt.file.readJSON( "package.json" ),
 
         jshint: {
-            src: "is.js"
+            options: {
+                "esnext": true
+            },
+            src: "is.es6.js"
+        },
+
+        traceur: {
+            options: {
+                blockBinding: true
+            },
+            custom: {
+                files: {
+                    "is.js": ["is.es6.js"]
+                }
+            }
         },
 
         uglify: {
@@ -22,6 +36,7 @@ module.exports = function( grunt ) {
 
     grunt.loadNpmTasks( "grunt-contrib-jshint" );
     grunt.loadNpmTasks( "grunt-contrib-uglify" );
+    grunt.loadNpmTasks( "grunt-traceur" );
 
-    grunt.registerTask( "default", [ "jshint", "uglify" ] );
+    grunt.registerTask( "default", [ "jshint", "traceur", "uglify" ] );
 };
