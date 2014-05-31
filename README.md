@@ -86,6 +86,7 @@ describe("moche with node-is example", function() {
 
 -----
 ## Changelog: ##
+- 0.4.1 Bug fix on error type testing, and some small fixes
 - 0.4.0 Rewrote library in ES6, compiled using grunt-traceur
 - 0.3.2 Performance optimization, added usage section to README, added detailed support information
 - 0.3.1 bug fix [#1][4]

@@ -11,9 +11,6 @@ module.exports = function( grunt ) {
         },
 
         traceur: {
-            options: {
-                blockBinding: true
-            },
             custom: {
                 files: {
                     "is.js": ["is.es6.js"]

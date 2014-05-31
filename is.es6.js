@@ -106,7 +106,7 @@
         //errors
         Error: val => _toString( val ) === _err,
         RealError: val => {
-            for( let e of _errorTypes ) {
+            for( var e of _errorTypes ) {
                 if( is[e]( val ) ) {
                     return false;
                 }
@@ -119,38 +119,28 @@
             of: (...values) => {
                 return {
                     equal: (...args) => {
-                        for( let test of args ) {
-                            if( is.Function( test ) ) {
-                                for( let val of values ) {
-                                    if( !test( val ) )
-                                        return false;
+                        for( var test of args ) {
+                            for( var val of values ) {
+                                if( is.Function( test ) && !test( val ) ) {
+                                    return false;
+                                } else if( is.String( test ) && ( test[0] === _not ?
+                                        is[test.substring( 1, test.length )]( val ) : !is[test]( val ) ) ) {
+                                    return false;
+                                } else if( !is.Function( test ) && !is.String( test ) ) {
+                                    return false;
                                 }
-                            } else if( is.String( test ) ) {
-                                for( let val of values ) {
-                                    if( test[0] === _not ? is[test.substring( 1, test.length )]( val ) :
-                                            !is[test]( val ) ) {
-                                        return false;
-                                    }
-                                }
-                            } else {
-                                return false;
                             }
                         }
                         return true;
                     },
                     either: (...args) => {
-                        for( let test of args ) {
-                            if( is.Function( test ) ) {
-                                for( let val of values ) {
-                                    if( test( val ) )
-                                        return true;
-                                }
-                            } else if( is.String( test ) ) {
-                                for( let val of values ) {
-                                    if( test[0] === _not ?!is[test.substring( 1, test.length )]( val ) :
-                                            is[test]( val ) ) {
-                                        return true;
-                                    }
+                        for( var test of args ) {
+                            for( var val of values ) {
+                                if( is.Function( test ) && test( val ) ) {
+                                    return true;
+                                } else if( is.String( test ) && ( test[0] === _not ?
+                                        !is[test.substring( 1, test.length )]( val ) : is[test]( val ) ) ) {
+                                    return true;
                                 }
                             }
                         }
@@ -229,8 +219,11 @@
         }( ) )
     };
 
-    for( let e of _errorTypes ) {
-        is[e] = val => val.toString( ).startsWith( e );
+    var errorTest = function( err ) {
+        return val => val.toString( ).startsWith( err );
+    };
+    for( var e of _errorTypes ) {
+        is[e] = errorTest( e );
     }
 
     return is;
