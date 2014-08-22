@@ -60,13 +60,13 @@ Include it in your project
 - `is.RealError(new Error())` test for *real* `Error`-objects only, will not match `RangeError`, `EvalError`, `URIError`, `SyntaxError`, `TypeError`, `ReferenceError`
 
 -----
-## Multitest function `is.type.of(obj1[,obj2[,obj3[,...]]])` ##
+## Multitest function `is.type.of(obj1[, obj2[, obj3[, ...]]])` ##
 returns two testing functions:
 
 - `equal()` which can be used to test for various types that have to match all, e.g.: `is.type.of(1,0).equal("Number","Integer","!Negative"); // returns true`
 - `either()` to test for various types, where at least one has to match, e.g.: `is.type.of(1,0,2).either("Float","Integer"); //returns true`
 
-`equal()` and `either()` can be used to test with your own functions too:
+`equal()` and `either()` can be used to test with custom functions too:
 `is.type.of("hello", "world").equal("String", "!EmptyString", function(elm) { return elm[3]==="l"; }); //returns true`
 
 -----
@@ -85,7 +85,15 @@ describe("moche with node-is example", function() {
 ```
 
 -----
+## Extend is.js using custom test functions `is.extend(name, fn)` ##
+Parameters:
+ - `name` {`String`} test name, the function will be registered to `is.<name>`
+ - `fn` {`Function`} test function, should accept one argument and return a `Boolean`
+
+
+-----
 ## Changelog: ##
+- 0.5.0 Added `is.extend`
 - 0.4.1 Bug fix on error type testing, and some small fixes
 - 0.4.0 Rewrote library in ES6, compiled using grunt-traceur
 - 0.3.2 Performance optimization, added usage section to README, added detailed support information

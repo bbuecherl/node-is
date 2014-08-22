@@ -1,3 +1,7 @@
+/*! is.js v0.5.0-1408231206
+ * by @bbuecherl
+ * License: MIT
+ */
 "use strict";
 (function(factory) {
   if (typeof module === "object") {
@@ -249,7 +253,12 @@
                   })
                 }}};
           })}};
-    }())
+    }()),
+    extend: (function(name, fn) {
+      if (is.String(name) && is.Function(fn) && !is.hasOwnProperty(name)) {
+        is[name] = fn;
+      }
+    })
   };
   var errorTest = function(err) {
     return (function(val) {

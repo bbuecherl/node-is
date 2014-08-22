@@ -116,9 +116,9 @@
 
         //type.of multitests
         type: {
-            of: (...values) => {
+            of: ( ...values ) => {
                 return {
-                    equal: (...args) => {
+                    equal: ( ...args ) => {
                         for( var test of args ) {
                             for( var val of values ) {
                                 if( is.Function( test ) && !test( val ) ) {
@@ -133,7 +133,7 @@
                         }
                         return true;
                     },
-                    either: (...args) => {
+                    either: ( ...args ) => {
                         for( var test of args ) {
                             for( var val of values ) {
                                 if( is.Function( test ) && test( val ) ) {
@@ -177,13 +177,13 @@
 
             return {
                 type: {
-                    of: (...values) => {
+                    of: ( ...values ) => {
                         var ref = is.type.of.apply( _array, values );
 
                         return {
                             to: {
                                 be: {
-                                    equal: (...args) => {
+                                    equal: ( ...args ) => {
                                         if( !ref.equal.apply( _array, args ) ) {
                                             var exp = listExpected( args, "and" ),
                                                 arr = toArray( args ),
@@ -197,7 +197,7 @@
                                         }
                                     },
 
-                                    either: (...args) => {
+                                    either: ( ...args ) => {
                                         if( !ref.either.apply( _array, args ) ) {
                                             var exp = listExpected( args, "or" ),
                                                 arr = toArray( args ),
@@ -216,7 +216,14 @@
                     }
                 }
             };
-        }( ) )
+        }( ) ),
+
+        // extend is.js by custom Tests
+        extend: ( name, fn ) => {
+            if( is.String( name ) && is.Function( fn ) && !is.hasOwnProperty( name ) ) {
+                is[name] = fn;
+            } // currently fails silently
+        }
     };
 
     var errorTest = function( err ) {
