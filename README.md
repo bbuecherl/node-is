@@ -1,4 +1,4 @@
-# is #
+# is.js v0.5.1 #
 ### simplified descriptive type testing library ###
 [![Build Status](https://travis-ci.org/bbuecherl/node-is.png)](https://travis-ci.org/bbuecherl/node-is)
 [![NPM](https://nodei.co/npm/node-is.png)](https://nodei.co/npm/node-is/)
@@ -47,6 +47,7 @@ Include it in your project
 - `is.Null(null)` test for `null`
 - `is.Function(function() {})` test for functions
 - `is.Array([])` test for arrays
+- `is.EmptryArray([])` test for empty arrays
 - `is.RegExp(/^/g)` test for regular expressions
 - `is.Object({})` test for objects
 - `is.RealObject({})` tests for *real* objects, `null`, arrays, regular expressions and errors will return **`false`**
@@ -78,8 +79,9 @@ Example:
 var expect = require("node-is").expect;
 
 describe("moche with node-is example", function() {
-    it( "is easy and awesome", function() {
+    it("is easy and awesome", function() {
             expect.type.of(1).to.be.equal("Integer", "Positive");
+            expect.type.of(-1).to.be.either("Positive", "Negative");
     });
 });
 ```
@@ -90,9 +92,22 @@ Parameters:
  - `name` {`String`} test name, the function will be registered to `is.<name>`
  - `fn` {`Function`} test function, should accept one argument and return a `Boolean`
 
+Example:
+
+```
+// register
+is.extend("HelloWorld", function(value) {
+    return is.String(value) && value === "Hello, World!";
+});
+
+// use
+is.HelloWorld("Hello, World!"); // returns true
+is.HelloWorld("Hello, Earth!"); // returns false
+```
 
 -----
 ## Changelog: ##
+- 0.5.1 Bug fix on global object (browser), added `is.EmptyArray`, some small improvements
 - 0.5.0 Added `is.extend`
 - 0.4.1 Bug fix on error type testing, and some small fixes
 - 0.4.0 Rewrote library in ES6, compiled using grunt-traceur

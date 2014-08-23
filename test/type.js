@@ -20,7 +20,6 @@ describe( "is.type.of", function( ) {
                 return elm[3]==="l";
             })).to.equal(true);
         } );
-
     } );
 
     describe( "#either()", function( ) {

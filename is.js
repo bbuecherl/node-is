@@ -1,4 +1,4 @@
-/*! is.js v0.5.0-1408231206
+/*! is.js v0.5.1-1408230706
  * by @bbuecherl
  * License: MIT
  */
@@ -13,11 +13,14 @@
   }
 }(function() {
   "use strict";
-  String.prototype.startsWith = String.prototype.startsWith || function(str, offset) {
-    offset = offset || 0;
-    return this.substring(offset, offset + str.length) === str;
-  };
-  var _number = "number",
+  var _global = this || (function() {
+    try {
+      return (typeof global !== _undef ? global : false);
+    } catch (e) {
+      return false;
+    }
+  }()) || window,
+      _number = "number",
       _bool = "boolean",
       _funct = "function",
       _object = "object",
@@ -35,9 +38,16 @@
       _arr = _toString(_array),
       _regex = _toString(_regexp),
       _err = _toString(new Error()),
-      _errorTypes = ["TypeError", "ReferenceError", "SyntaxError", "URIError", "EvalError", "RangeError"];
-  if (typeof Symbol === _undef) {
-    (this || (typeof global !== _undef ? global : false) || window).Symbol = {};
+      _errorTypes = ["TypeError", "ReferenceError", "SyntaxError", "URIError", "EvalError", "RangeError"],
+      _removeFirst = (function(str) {
+        return str.substring(1);
+      });
+  String.prototype.startsWith = String.prototype.startsWith || function(str, offset) {
+    offset = offset || 0;
+    return this.substring(offset, offset + str.length) === str;
+  };
+  if (typeof _global.Symbol === _undef) {
+    _global.Symbol = {};
   }
   if (typeof Symbol.iterator === _undef) {
     Symbol.iterator = _iterator;
@@ -57,6 +67,14 @@
         })};
     };
   }
+  var assertionError = (function(expected, actual) {
+    var tmp = new Error("expected " + actual + " to be " + expected);
+    tmp.name = "AssertionError";
+    tmp.actual = actual;
+    tmp.expected = expected;
+    tmp.showDiff = true;
+    return tmp;
+  });
   var is = {
     Number: (function(val) {
       return typeof val === _number;
@@ -114,6 +132,9 @@
     }),
     Array: (function(val) {
       return _toString(val) === _arr;
+    }),
+    EmptyArray: (function(val) {
+      return is.Array(val) && val.length === 0;
     }),
     RegExp: (function(val) {
       return _toString(val) === _regex;
@@ -199,18 +220,20 @@
             var str = "";
             for (var ownFunct = 0,
                 sep = "",
-                i = 0; i < args.length; ++i) {
-              if (i === args.length - 1) {
+                i = 0,
+                arg; i < args.length; ++i) {
+              arg = args[i];
+              if (i !== 0 && i === args.length - 1) {
                 str += " " + lastSeperator + " ";
               } else if (i !== 0) {
                 str += ", ";
               }
               if (is.Function(arg)) {
                 str += is.Defined(arg.name) ? arg.name : ("custom$" + ownFunct++);
-              } else if (is.String(arg)) {
+              } else if (is.String(arg) && is.hasOwnProperty(arg) || is.String(arg) && is.hasOwnProperty(_removeFirst(arg))) {
                 str += arg;
               } else {
-                return "unknown test statement";
+                str += "<unknown test statement '" + arg + "'>";
               }
             }
             return str;
@@ -227,14 +250,10 @@
                       args[$__6] = arguments[$__6];
                     if (!ref.equal.apply(_array, args)) {
                       var exp = listExpected(args, "and"),
-                          arr = toArray(args),
-                          err = new Error("expected " + arr + " to be " + exp);
-                      err.name = "AssertionError";
-                      err.actual = arr;
-                      err.expected = exp;
-                      err.showDiff = true;
-                      throw err;
+                          arr = toArray(values);
+                      throw assertionError(exp, arr);
                     }
+                    return true;
                   }),
                   either: (function() {
                     for (var args = [],
@@ -242,14 +261,10 @@
                       args[$__7] = arguments[$__7];
                     if (!ref.either.apply(_array, args)) {
                       var exp = listExpected(args, "or"),
-                          arr = toArray(args),
-                          err = new Error("expected " + arr + " to be " + exp);
-                      err.name = "AssertionError";
-                      err.actual = arr;
-                      err.expected = exp;
-                      err.showDiff = true;
-                      throw err;
+                          arr = toArray(values);
+                      throw assertionError(exp, arr);
                     }
+                    return true;
                   })
                 }}};
           })}};
@@ -260,11 +275,11 @@
       }
     })
   };
-  var errorTest = function(err) {
+  var errorTest = (function(err) {
     return (function(val) {
       return val.toString().startsWith(err);
     });
-  };
+  });
   for (var $__0 = _errorTypes[Symbol.iterator](),
       $__1; !($__1 = $__0.next()).done; ) {
     var e = $__1.value;

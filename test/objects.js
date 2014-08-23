@@ -3,7 +3,7 @@ var expect = require( "chai" ).expect,
 
 
 describe( "is.Object", function( ) {
-    it( "should return true when param is a object", function( ) {
+    it( "should return true when param is an object", function( ) {
         expect(is.Object({})).to.equal(true);
         expect(is.Object(null)).to.equal(true);
         expect(is.Object([])).to.equal(true);
@@ -22,7 +22,7 @@ describe( "is.Object", function( ) {
 } );
 
 describe( "is.Array", function( ) {
-    it( "should return true when param is a array", function( ) {
+    it( "should return true when param is an array", function( ) {
         expect(is.Array([])).to.equal(true);
         expect(is.Array([1])).to.equal(true);
     } );
@@ -37,6 +37,25 @@ describe( "is.Array", function( ) {
         expect(is.Array("123")).to.equal(false);
         expect(is.Array(undefined)).to.equal(false);
         expect(is.Array(1)).to.equal(false);
+    } );
+} );
+
+describe( "is.EmptyArray", function( ) {
+    it( "should return true when param is an empty array", function( ) {
+        expect(is.EmptyArray([])).to.equal(true);
+    } );
+
+    it( "should return false when param is no empty array", function( ) {
+        expect(is.EmptyArray(new Error())).to.equal(false);
+        expect(is.EmptyArray([1])).to.equal(false);
+        expect(is.EmptyArray({})).to.equal(false);
+        expect(is.EmptyArray(null)).to.equal(false);
+        expect(is.EmptyArray(true)).to.equal(false);
+        expect(is.EmptyArray(false)).to.equal(false);
+        expect(is.EmptyArray(function() {})).to.equal(false);
+        expect(is.EmptyArray("123")).to.equal(false);
+        expect(is.EmptyArray(undefined)).to.equal(false);
+        expect(is.EmptyArray(1)).to.equal(false);
     } );
 } );
 
