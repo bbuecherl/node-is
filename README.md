@@ -1,7 +1,8 @@
-# is.js v0.5.1 #
+# is.js v0.5.2 [![Build Status](https://travis-ci.org/bbuecherl/node-is.png)](https://travis-ci.org/bbuecherl/node-is) #
+
 ### simplified descriptive type testing library ###
-[![Build Status](https://travis-ci.org/bbuecherl/node-is.png)](https://travis-ci.org/bbuecherl/node-is)
-[![NPM](https://nodei.co/npm/node-is.png)](https://nodei.co/npm/node-is/)
+
+[![NPM](https://nodei.co/npm/node-is.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/node-is/)
 
 Supporting Node, AMDs and the browsers ( IE 6+, Chrome 1+, Firefox 3.6+, Opera 12.1+, Safari 5.1+ )
 
@@ -47,7 +48,7 @@ Include it in your project
 - `is.Null(null)` test for `null`
 - `is.Function(function() {})` test for functions
 - `is.Array([])` test for arrays
-- `is.EmptryArray([])` test for empty arrays
+- `is.EmptyArray([])` test for empty arrays
 - `is.RegExp(/^/g)` test for regular expressions
 - `is.Object({})` test for objects
 - `is.RealObject({})` tests for *real* objects, `null`, arrays, regular expressions and errors will return **`false`**
@@ -107,6 +108,7 @@ is.HelloWorld("Hello, Earth!"); // returns false
 
 -----
 ## Changelog: ##
+- 0.5.2 Bower release
 - 0.5.1 Bug fix on global object (browser), added `is.EmptyArray`, some small improvements
 - 0.5.0 Added `is.extend`
 - 0.4.1 Bug fix on error type testing, and some small fixes

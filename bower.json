@@ -1,0 +1,12 @@
+{
+  "name": "node-is",
+  "version": "0.5.2",
+  "main": "is.min.js",
+  "ignore": [
+    "node_modules/",
+    "test/",
+    ".travis.yml",
+    "Gruntfile.js",
+    "package.json"
+  ]
+}
