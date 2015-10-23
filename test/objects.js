@@ -90,3 +90,17 @@ describe( "is.RealObject", function( ) {
         expect(is.RealObject(new Error())).to.equal(false);
     } );
 } );
+
+describe("is.Arguments", function( ) {
+    it( "should return true when param is an arguments object", function( ) {
+        expect(is.Arguments(arguments)).to.equal(true);
+    } );
+
+    it( "should return false when param is no arguments object", function( ) {
+        expect(is.Arguments(null)).to.equal(false);
+        expect(is.Arguments([])).to.equal(false);
+        expect(is.Arguments([1])).to.equal(false);
+        expect(is.Arguments(new Error())).to.equal(false);
+        expect(is.Arguments({})).to.equal(false);
+    } );
+} );

@@ -1,4 +1,4 @@
-/*! is.js v0.5.1-1408230706
+/*! is.js v0.5.3-1510231133
  * by @bbuecherl
  * License: MIT
  */
@@ -37,6 +37,7 @@
       }),
       _arr = _toString(_array),
       _regex = _toString(_regexp),
+      _args = _toString(arguments),
       _err = _toString(new Error()),
       _errorTypes = ["TypeError", "ReferenceError", "SyntaxError", "URIError", "EvalError", "RangeError"],
       _removeFirst = (function(str) {
@@ -141,6 +142,9 @@
     }),
     RealObject: (function(val) {
       return is.Object(val) && !is.Function(val) && !is.Null(val) && !is.Array(val) && !is.RegExp(val) && !is.Error(val);
+    }),
+    Arguments: (function(val) {
+      return _toString(val) == _args;
     }),
     Error: (function(val) {
       return _toString(val) === _err;

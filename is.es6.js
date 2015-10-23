@@ -45,6 +45,7 @@
     // toString values for array, regexp and error
         _arr = _toString( _array ),
         _regex = _toString( _regexp ),
+        _args = _toString( arguments ),
         _err = _toString( new Error( ) ),
     // javascript error types
         _errorTypes = [ "TypeError", "ReferenceError",
@@ -126,6 +127,7 @@
         RegExp: val => _toString( val ) === _regex,
         RealObject: val => is.Object( val ) && !is.Function( val ) && !is.Null( val ) &&
                 !is.Array( val ) && !is.RegExp( val ) && !is.Error( val ),
+        Arguments: val => _toString( val ) == _args,
 
         //errors
         Error: val => _toString( val ) === _err,
