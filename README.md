@@ -126,6 +126,6 @@ is.HelloWorld("Hello, Earth!"); // returns false
 
 
   [1]: http://bbuecherl.mit-license.org/
-  [2]: http://visionmedia.github.io/mocha
+  [2]: http://mochajs.org/
   [3]: https://github.com/bbuecherl/node-is/blob/master/is.min.js
   [4]: https://github.com/bbuecherl/node-is/issues/1
